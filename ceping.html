@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中年女性重启方向小测评</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 
+                         "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #fdf8f3;
+            color: #4a3728;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        /* 首页 */
+        .page-home .tag {
+            display: inline-block;
+            background: #fff0e6;
+            color: #e07a40;
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .page-home h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3a2418;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .page-home .subtitle {
+            font-size: 16px;
+            color: #e07a40;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        .page-home .desc {
+            font-size: 15px;
+            line-height: 2;
+            color: #6b5244;
+            margin-bottom: 28px;
+        }
+
+        .page-home .info-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 16px;
+            background: #fdf3eb;
+            border-radius: 12px;
+        }
+
+        .page-home .info-item {
+            font-size: 13px;
+            color: #8a6a5a;
+        }
+
+        .page-home .info-item span {
+            font-weight: 600;
+            color: #e07a40;
+        }
+
+        .hint {
+            font-size: 13px;
+            color: #b08878;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .btn-start {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #e07a40, #d4603a);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+
+        .btn-start:hover {
+            opacity: 0.9;
+        }
+
+        /* 答题页 */
+        .page-quiz {
+            display: none;
+        }
+
+        .progress-wrap {
+            margin-bottom: 28px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #b08878;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0e6df;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e07a40, #f0a070);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .question-num {
+            font-size: 13px;
+            color: #e07a40;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #3a2418;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 14px 18px;
+            background: #fdf8f3;
+            border: 1.5px solid #e8d8cf;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #4a3728;
+            text-align: left;
+            cursor: pointer;
+            line-height: 1.5;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: #fff0e6;
+            border-color: #e07a40;
+            color: #e07a40;
+        }
+
+        /* 结果页 */
+        .page-result {
+            display: none;
+        }
+
+        .result-badge {
+            display: inline-block;
+            background: #fff0e6;
+            color: #e07a40;
+            font-size: 13px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .result-type {
+            font-size: 26px;
+            font-weight: 700;
+            color: #3a2418;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .result-section {
+            margin-bottom: 24px;
+        }
+
+        .result-section h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e07a40;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid #e07a40;
+        }
+
+        .result-section p {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #6b5244;
+        }
+
+        .result-section ul {
+            padding-left: 18px;
+        }
+
+        .result-section ul li {
+            font-size: 15px;
+            line-height: 2;
+            color: #6b5244;
+        }
+
+        .step-box {
+            background: #fdf3eb;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .step-box h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e07a40;
+            margin-bottom: 10px;
+        }
+
+        .step-box p {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #6b5244;
+        }
+
+        .step-highlight {
+            font-weight: 600;
+            color: #c05a28;
+        }
+
+        .reminder-box {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 28px;
+        }
+
+        .reminder-box p {
+            font-size: 13px;
+            color: #999;
+            line-height: 1.9;
+            text-align: center;
+        }
+
+        .btn-retry {
+            width: 100%;
+            padding: 14px;
+            background: #fff;
+            border: 1.5px solid #e07a40;
+            color: #e07a40;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        .btn-retry:hover {
+            background: #fff0e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 首页 -->
+    <div class="page-home" id="pageHome">
+        <div class="tag">自我梳理小工具</div>
+        <h1>中年女性重启方向小测评</h1>
+        <div class="subtitle">10个问题，帮你重新看见自己</div>
+        <div class="desc">
+            有时候，不是不知道自己能做什么，<br>
+            而是太久没有认真问过自己了。<br><br>
+            这份测评不是标准答案，<br>
+            更像一个轻量的自我梳理工具。<br><br>
+            也是我在重新开始的过程中，<br>
+            反复问自己的问题。<br><br>
+            也许做完之后，你不会立刻找到所有答案，<br>
+            但你可能会更清楚一点：<br>
+            自己在意什么、擅长什么、<br>
+            接下来可以先往哪里走。
+        </div>
+        <div class="info-bar">
+            <div class="info-item">共 <span>10</span> 题</div>
+            <div class="info-item">约 <span>3</span> 分钟</div>
+            <div class="info-item"><span>4</span> 种结果</div>
+        </div>
+        <p class="hint">没有对错，按照第一直觉选择就好</p>
+        <button class="btn-start" onclick="startQuiz()">开始测评</button>
+    </div>
+
+    <!-- 答题页 -->
+    <div class="page-quiz" id="pageQuiz">
+        <div class="progress-wrap">
+            <div class="progress-text">
+                <span id="progressText">第 1 题，共 10 题</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width:0%"></div>
+            </div>
+        </div>
+        <div class="question-num" id="questionNum">Q1</div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options" id="optionsList"></div>
+    </div>
+
+    <!-- 结果页 -->
+    <div class="page-result" id="pageResult"></div>
+
+</div>
+
+<script>
+    var questions = [
+        {
+            text: "你现在的状态更接近哪一种？",
+            options: [
+                { text: "全职在家，想重新开始", type: "A" },
+                { text: "有工作，但想做点属于自己的事", type: "B" },
+                { text: "刚失业或正在面临职业变动", type: "C" },
+                { text: "已经在尝试新方向，但还不太确定", type: "D" }
+            ]
+        },
+        {
+            text: "你现在每天真正能留给自己的时间，大概有多少？",
+            options: [
+                { text: "几乎没有", type: "A" },
+                { text: "每天30分钟到1小时", type: "B" },
+                { text: "每天1到3小时", type: "C" },
+                { text: "时间相对自由，可以自己安排", type: "D" }
+            ]
+        },
+        {
+            text: "你现在最需要的是什么？",
+            options: [
+                { text: "尽快有一点收入", type: "A" },
+                { text: "找到一个更清晰的方向", type: "B" },
+                { text: "找回一点自信和自我感", type: "C" },
+                { text: "有人陪着我一起做，而不是一个人摸索", type: "D" }
+            ]
+        },
+        {
+            text: "如果别人来找你帮忙，最常见的是哪一类事？",
+            options: [
+                { text: "倾听、安慰、陪聊", type: "express" },
+                { text: "出主意、理思路、做规划", type: "plan" },
+                { text: "帮忙执行、整理、处理具体问题", type: "learn" },
+                { text: "教一点东西，或者分享经验", type: "connect" }
+            ]
+        },
+        {
+            text: "做哪类事情的时候，你比较容易投入，甚至忘了时间？",
+            options: [
+                { text: "写东西、表达、记录想法", type: "express" },
+                { text: "整理信息、做计划、搭结构", type: "plan" },
+                { text: "学新东西、研究问题、琢磨方法", type: "learn" },
+                { text: "和人交流、帮助别人、做连接", type: "connect" }
+            ]
+        },
+        {
+            text: "你最不能接受哪种工作或生活状态？",
+            options: [
+                { text: "每天都很忙，但完全没有自己的空间", type: "A" },
+                { text: "做的事没有价值感，像在机械重复", type: "B" },
+                { text: "想改变，但一直看不到结果", type: "C" },
+                { text: "一切都很稳定，却越来越感觉不到自己", type: "D" }
+            ]
+        },
+        {
+            text: "如果不考虑现实压力，你最想尝试的方向是哪一种？",
+            options: [
+                { text: "写作、内容创作、自媒体表达", type: "express" },
+                { text: "整理规划、管理支持、工具方法类", type: "plan" },
+                { text: "学习型、研究型、技能提升类", type: "learn" },
+                { text: "陪伴支持、咨询沟通、帮助别人类", type: "connect" }
+            ]
+        },
+        {
+            text: "回头看这些年，你最有成就感的时刻，更接近哪一种？",
+            options: [
+                { text: "我把心里的东西表达出来了，被看见了", type: "express" },
+                { text: "我把一件复杂的事理顺了，做成了", type: "plan" },
+                { text: "我靠自己学会了一样东西", type: "learn" },
+                { text: "我帮助了别人，让对方真的变好了", type: "connect" }
+            ]
+        },
+        {
+            text: "现在最阻碍你重新开始的是什么？",
+            options: [
+                { text: "我不知道自己到底能做什么", type: "A" },
+                { text: "我知道一点方向，但迟迟开始不了", type: "B" },
+                { text: "我总怕选错、怕白费力气", type: "C" },
+                { text: "我太久没有把自己放在生活中心了", type: "D" }
+            ]
+        },
+        {
+            text: "如果接下来给你三个月时间，你最希望自己实现什么？",
+            options: [
+                { text: "找到一种属于自己的表达方式", type: "express" },
+                { text: "找到一个可持续做下去的方向", type: "plan" },
+                { text: "建立一个稳定的小习惯，让自己重新动起来", type: "learn" },
+                { text: "重新感受到：我不是只有家庭，我还有我自己", type: "connect" }
+            ]
+        }
+    ];
+
+    var results = {
+        express: {
+            badge: "测评结果",
+            type: "表达重启型",
+            desc: "从你的回答里，我看到的是一个很有表达潜力的你。\n\n你可能并不是最外向的那类人，但你心里其实有很多感受、想法和观察。你对生活是有感知力的，也很容易从经历里生出自己的理解。\n\n只是这些年，这部分可能被压住了，被家庭、工作和琐事慢慢盖过去了。",
+            strengths: [
+                "对情绪和细节比较敏感",
+                "有表达欲，或者至少有记录和梳理的需要",
+                "容易从真实经历里提炼出自己的理解",
+                "适合通过文字、内容、分享来重新看见自己"
+            ],
+            directions: [
+                "写作、公众号、小红书表达",
+                "内容整理与分享",
+                "把自己的经历变成对他人有帮助的内容",
+                "从表达里慢慢建立自信和方向感"
+            ],
+            step: "别急着想这能不能赚钱。\n\n先试着做一件最小的事：\n\n写下最近一件让你特别有感触的小事，哪怕只写300字。\n\n先让自己重新开口。很多方向，都是从表达开始变清楚的。"
+        },
+        plan: {
+            badge: "测评结果",
+            type: "规划行动型",
+            desc: "从你的回答里，我看到你是一个很有整理和推动能力的人。\n\n你可能不是那种最会讲故事的人，但你很擅长把散乱的事梳理清楚，把复杂的问题拆成步骤。\n\n很多人遇到问题时容易乱，而你更像是那个能慢慢把事情理顺、推进的人。\n\n这是一种非常稀缺、也非常容易被低估的能力。",
+            strengths: [
+                "做事有条理",
+                "擅长规划、整理、搭结构",
+                "能把抽象的问题变成具体步骤",
+                "很适合从方法、工具、流程中找到自己的价值感"
+            ],
+            directions: [
+                "计划、整理、执行支持类工作",
+                "把自己的方法整理成清单、模板、手册",
+                "项目协助、运营支持、流程优化类事情",
+                "陪别人理清思路、推进事情"
+            ],
+            step: "先不要急着找宏大方向。\n\n试着做一件很小的事：\n\n把你最近处理得还不错的一件事，拆成步骤写下来。\n\n你会发现，你以为只是顺手做的事，其实里面藏着很清晰的方法感。"
+        },
+        learn: {
+            badge: "测评结果",
+            type: "学习探索型",
+            desc: "从你的回答里，我看到你是一个很有重新学习能力的人。\n\n你可能对很多事都有兴趣，也愿意去研究、尝试、靠近新的东西。\n\n只是有时候，你会因为方向太多，或者想得太多，反而更难真正开始。\n\n你不是没有可能性，恰恰相反，你的可能性很多。现在更重要的，不是再找到更多可能，而是从里面选一个先试。",
+            strengths: [
+                "学习能力强",
+                "对新事物不排斥",
+                "愿意研究、琢磨、反复尝试",
+                "很适合通过持续学习打开新的路径"
+            ],
+            directions: [
+                "技能学习和技能变现",
+                "新媒体、AI工具、内容研究类方向",
+                "先从一个具体技能开始，再往外扩展",
+                "用学会一件事作为重启入口"
+            ],
+            step: "你现在最需要的，不是学更多，而是选一个，先做下去。\n\n从今天开始，试着问自己：\n\n如果只允许我接下来认真试一件事，我愿意试什么？\n\n别同时开很多口子。先把一个小切口做深。"
+        },
+        connect: {
+            badge: "测评结果",
+            type: "连接陪伴型",
+            desc: "从你的回答里，我看到你是一个很有陪伴和支持能力的人。\n\n你可能很容易理解别人，也很容易成为别人愿意倾诉、愿意依赖的人。\n\n有些人擅长表达自己，有些人擅长解决问题，而你身上更明显的，是那种让人感觉跟你在一起是安全的能力。\n\n这种能力，看起来柔软，其实非常珍贵。",
+            strengths: [
+                "有共情力，能听懂别人没说出口的话",
+                "让人有被理解、被接住的感觉",
+                "适合做连接、支持、陪伴类事情",
+                "在社群、关系、沟通中容易发挥价值"
+            ],
+            directions: [
+                "陪伴类社群",
+                "咨询、支持、沟通相关方向",
+                "做一个把同类人聚起来的人",
+                "通过真实的交流和陪伴，找到自己的价值"
+            ],
+            step: "不要急着定义我能不能做什么事业。\n\n先试一件更小的事：\n\n去认真和一个和你有相似处境的人聊一次。\n\n不是给她建议，只是认真听，认真说。\n\n你会慢慢发现，你给别人的支持，本身就是一种很真实的能力。"
+        }
+    };
+
+    var current = 0;
+    var scores = { express: 0, plan: 0, learn: 0, connect: 0 };
+
+    function startQuiz() {
+        document.getElementById("pageHome").style.display = "none";
+        document.getElementById("pageQuiz").style.display = "block";
+        current = 0;
+        scores = { express: 0, plan: 0, learn: 0, connect: 0 };
+        showQuestion();
+    }
+
+    function showQuestion() {
+        var q = questions[current];
+        document.getElementById("questionNum").textContent = "Q" + (current + 1);
+        document.getElementById("questionText").textContent = q.text;
+        document.getElementById("progressText").textContent =
+            "第 " + (current + 1) + " 题，共 " + questions.length + " 题";
+        var pct = Math.round((current / questions.length) * 100);
+        document.getElementById("progressPercent").textContent = pct + "%";
+        document.getElementById("progressFill").style.width = pct + "%";
+
+        var html = "";
+        for (var i = 0; i < q.options.length; i++) {
+            var opt = q.options[i];
+            html += '<button class="option-btn" onclick="selectOption(\'' +
+                opt.type + '\')">' + opt.text + '</button>';
+        }
+        document.getElementById("optionsList").innerHTML = html;
+    }
+
+    function selectOption(type) {
+        if (type === "express" || type === "plan" ||
+            type === "learn" || type === "connect") {
+            scores[type]++;
+        }
+        current++;
+        if (current < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById("pageQuiz").style.display = "none";
+
+        var best = "express";
+        var max = 0;
+        var keys = ["express", "plan", "learn", "connect"];
+        for (var i = 0; i < keys.length; i++) {
+            if (scores[keys[i]] > max) {
+                max = scores[keys[i]];
+                best = keys[i];
+            }
+        }
+
+        var r = results[best];
+        var strengthsHtml = "";
+        for (var j = 0; j < r.strengths.length; j++) {
+            strengthsHtml += "<li>" + r.strengths[j] + "</li>";
+        }
+        var directionsHtml = "";
+        for (var k = 0; k < r.directions.length; k++) {
+            directionsHtml += "<li>" + r.directions[k] + "</li>";
+        }
+
+        var descHtml = r.desc.replace(/\n/g, "<br>");
+        var stepHtml = r.step.replace(/\n/g, "<br>");
+
+        var html = '<div class="result-badge">' + r.badge + '</div>' +
+            '<div class="result-type">' + r.type + '</div>' +
+            '<div class="result-section">' +
+            '<h3>你的特质</h3>' +
+            '<p>' + descHtml + '</p>' +
+            '</div>' +
+            '<div class="result-section">' +
+            '<h3>你可能的优势</h3>' +
+            '<ul>' + strengthsHtml + '</ul>' +
+            '</div>' +
+            '<div class="result-section">' +
+            '<h3>适合你探索的方向</h3>' +
+            '<ul>' + directionsHtml + '</ul>' +
+            '</div>' +
+            '<div class="step-box">' +
+            '<h3>你的第一步建议</h3>' +
+            '<p>' + stepHtml + '</p>' +
+            '</div>' +
+            '<div class="reminder-box">' +
+            '<p>这份测评更像一个自我梳理的小工具，<br>' +
+            '结果仅供参考和娱乐，<br>' +
+            '不代表对你的定义，也不是标准答案。<br><br>' +
+            '如果它让你对自己多了一点点看见和思考，<br>' +
+            '那它就已经有价值了。</p>' +
+            '</div>' +
+            '<button class="btn-retry" onclick="retryQuiz()">重新测评</button>';
+
+        var resultPage = document.getElementById("pageResult");
+        resultPage.innerHTML = html;
+        resultPage.style.display = "block";
+    }
+
+    function retryQuiz() {
+        document.getElementById("pageResult").style.display = "none";
+        document.getElementById("pageHome").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
