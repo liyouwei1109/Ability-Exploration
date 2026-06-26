@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中年女性重启方向测评</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #FDF9F6;
+    color: #2C2C2A;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #E8845A, #F0A876, #A8D8A8);
+  }
+
+  #app {
+    min-height: calc(100vh - 4px);
+  }
+
+  .page { display: none; padding: 2rem 1.25rem; max-width: 480px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* Landing */
+  .hero-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: #FFF3E8;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem; font-size: 30px;
+  }
+  .hero-title {
+    font-size: 26px; font-weight: 600; color: #2C2C2A;
+    text-align: center; line-height: 1.35; margin-bottom: .5rem;
+  }
+  .hero-sub {
+    font-size: 16px; color: #E8845A; text-align: center;
+    font-weight: 500; margin-bottom: 1.25rem;
+  }
+  .hero-desc {
+    font-size: 15px; color: #5F5E5A; text-align: center;
+    line-height: 1.8; margin-bottom: 2.5rem;
+  }
+  .start-btn {
+    width: 100%; padding: 1rem;
+    background: #E8845A; border: none; border-radius: 14px;
+    font-size: 17px; font-weight: 600; color: #fff;
+    cursor: pointer; transition: background .15s, transform .1s;
+    letter-spacing: .02em;
+  }
+  .start-btn:hover { background: #D4734A; }
+  .start-btn:active { transform: scale(.98); }
+  .landing-note {
+    text-align: center; font-size: 13px; color: #888780; margin-top: 1rem;
+  }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-label { font-size: 13px; color: #888780; margin-bottom: .5rem; }
+  .progress-bar {
+    height: 6px; background: #E5E3DC; border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #E8845A, #F0A876);
+    border-radius: 99px;
+    transition: width .4s ease;
+  }
+
+  /* Question */
+  .q-num {
+    font-size: 12px; color: #E8845A; font-weight: 600;
+    letter-spacing: .08em; margin-bottom: .5rem;
+  }
+  .q-text {
+    font-size: 19px; font-weight: 600; color: #2C2C2A;
+    line-height: 1.5; margin-bottom: 1.5rem;
+  }
+  .options { display: flex; flex-direction: column; gap: .625rem; }
+  .opt {
+    display: flex; align-items: center; gap: .875rem;
+    padding: .9rem 1rem;
+    background: #fff;
+    border: 1px solid #E5E3DC;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    text-align: left; width: 100%;
+  }
+  .opt:hover { border-color: #E8845A; background: #FFF8F4; }
+  .opt.selected { border-color: #E8845A; background: #FFF3E8; }
+  .opt-key {
+    width: 30px; height: 30px; min-width: 30px;
+    border-radius: 50%;
+    background: #F5F3EE;
+    border: 1px solid #D3D1C7;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #888780;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .opt.selected .opt-key {
+    background: #E8845A; border-color: #E8845A; color: #fff;
+  }
+  .opt-text { font-size: 15px; color: #2C2C2A; line-height: 1.5; }
+
+  /* Result */
+  .result-badge {
+    display: inline-block;
+    padding: .3rem 1rem;
+    background: #FFF3E8; color: #C05E38;
+    border-radius: 99px; font-size: 13px; font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .result-title {
+    font-size: 26px; font-weight: 700; color: #2C2C2A;
+    margin-bottom: 1.5rem; line-height: 1.3;
+  }
+  .result-card {
+    background: #fff;
+    border: 1px solid #E5E3DC;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .section-label {
+    font-size: 12px; font-weight: 700; color: #E8845A;
+    letter-spacing: .08em; margin-bottom: .625rem;
+  }
+  .result-body { font-size: 15px; color: #2C2C2A; line-height: 1.8; }
+  .tag-wrap { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+  .tag {
+    padding: .3rem .875rem;
+    background: #FFF3E8; border-radius: 99px;
+    font-size: 13px; color: #C05E38; font-weight: 500;
+  }
+
+  .first-step-card {
+    background: #F4FAF0;
+    border: 1px solid #C0DDA8;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .first-step-label {
+    font-size: 12px; font-weight: 700; color: #3B6D11;
+    letter-spacing: .08em; margin-bottom: .625rem;
+  }
+  .first-step-body { font-size: 15px; color: #27500A; line-height: 1.8; }
+
+  .cta-card {
+    background: #FFF8F0;
+    border: 1px solid #F0C8A8;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .cta-text { font-size: 14px; color: #8B4A28; line-height: 1.8; }
+
+  .retry-btn {
+    width: 100%; padding: .9rem;
+    background: transparent;
+    border: 1px solid #D3D1C7;
+    border-radius: 14px;
+    font-size: 15px; color: #5F5E5A;
+    cursor: pointer; transition: background .15s;
+    margin-bottom: 2rem;
+  }
+  .retry-btn:hover { background: #F5F3EE; }
+
+  @media (max-width: 400px) {
+    .hero-title { font-size: 22px; }
+    .q-text { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+<div id="app">
+
+  <!-- Landing Page -->
+  <div class="page active" id="page-landing">
+    <div style="padding-top: 3rem;">
+      <div class="hero-icon">🌸</div>
+      <h1 class="hero-title">中年女性重启方向测评</h1>
+      <p class="hero-sub">10个问题，帮你找到属于你的方向</p>
+      <p class="hero-desc">
+        做完这10个问题，你会更清楚自己有什么、<br>
+        适合什么、该从哪里开始。<br>
+        大约需要3分钟。
+      </p>
+      <button class="start-btn" onclick="startQuiz()">开始测评</button>
+      <p class="landing-note">完全匿名 · 无需注册</p>
+    </div>
+  </div>
+
+  <!-- Quiz Page -->
+  <div class="page" id="page-quiz">
+    <div class="progress-wrap">
+      <div class="progress-label" id="progress-label">第 1 题 / 共 10 题</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 10%;"></div>
+      </div>
+    </div>
+    <div id="question-area"></div>
+  </div>
+
+  <!-- Result Page -->
+  <div class="page" id="page-result">
+    <div id="result-area"></div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "你现在的状态是？",
+    opts: ["全职在家，想重新开始", "有工作，但想做点自己的事", "刚失业或即将失业", "已经在尝试新方向，但还不确定"]
+  },
+  {
+    q: "你每天能留给自己的时间大概是？",
+    opts: ["几乎没有", "每天30分钟到1小时", "每天1到3小时", "时间比较自由"]
+  },
+  {
+    q: "你现在最需要的是？",
+    opts: ["尽快有收入", "找到一个方向", "找回自信和自我感", "有人陪着一起做"]
+  },
+  {
+    q: "别人最常来找你帮什么忙？",
+    opts: ["倾听和安慰", "出主意、做规划", "动手做具体的事", "很少有人来找我"]
+  },
+  {
+    q: "做什么事的时候，你会比较投入，甚至忘了时间？",
+    opts: ["写东西、表达", "整理、规划、做清单", "学习新技能", "和人交流、帮人解决问题", "我不确定"]
+  },
+  {
+    q: "你最不能接受的工作状态是？",
+    opts: ["完全没有自由，被困住", "收入太低，养不活自己", "没有成长空间", "一个人做，太孤独"]
+  },
+  {
+    q: "你以前做过的事情里，你觉得自己最擅长的是？",
+    opts: ["和人打交道", "写作或表达", "组织和管理", "学习和研究", "我觉得自己好像什么都不太擅长"]
+  },
+  {
+    q: "如果不考虑现实限制，你最想尝试的方向是？",
+    opts: ["内容创作（写作、自媒体）", "教育或培训（教别人某种技能）", "服务类（咨询、陪伴）", "技能变现（翻译、设计等）", "我还没有想法"]
+  },
+  {
+    q: "你觉得现在最大的障碍是？",
+    opts: ["不知道自己能做什么", "知道方向，但不知道怎么开始", "已经在做了，但坚持不下去", "家人不支持或没有时间"]
+  },
+  {
+    q: "如果给你三个月试一件事，你最希望得到的结果是？",
+    opts: ["赚到第一笔小收入", "找到一个明确的方向", "建立一个可以持续做的习惯", "认识一群同行的人"]
+  }
+];
+
+const results = {
+  express: {
+    badge: "表达驱动型",
+    title: "你是表达驱动型 ✍️",
+    strength: "根据你的回答，你的核心优势可能是善于倾听、善于用文字或语言表达、能把复杂的感受说清楚。",
+    directions: ["内容创作（公众号、小红书、写作）", "陪伴型服务（咨询、社群运营）", "教学类内容"],
+    step: "今天就写下你最近最有感触的一件事，哪怕只有300字。"
+  },
+  plan: {
+    badge: "组织规划型",
+    title: "你是组织规划型 📋",
+    strength: "根据你的回答，你的核心优势可能是逻辑清晰、善于把事情条理化、有执行力。",
+    directions: ["项目管理类", "工具类产品（模板、手册）", "培训教学"],
+    step: "把你做某件事的方法记下来，那个方法就是你可以教给别人的东西。"
+  },
+  learn: {
+    badge: "学习探索型",
+    title: "你是学习探索型 🔍",
+    strength: "根据你的回答，你的核心优势可能是学习能力强、好奇心旺盛、适应力强。",
+    directions: ["新兴领域（AI工具、新媒体）", "跨界整合", "研究型内容"],
+    step: "选一个你最近最感兴趣的事情，花一周时间深入了解它。"
+  },
+  connect: {
+    badge: "连接陪伴型",
+    title: "你是连接陪伴型 🤝",
+    strength: "根据你的回答，你的核心优势可能是善于建立信任、有耐心、善于理解别人的处境。",
+    directions: ["社群运营", "咨询陪伴", "活动组织"],
+    step: "找一个有类似处境的人聊一次，你会发现你帮助别人的能力远比你想象的强。"
+  },
+  explore: {
+    badge: "探索发现型",
+    title: "你是探索发现型 🌱",
+    strength: "根据你的回答，你正处在一个很珍贵的探索阶段——多元的可能性还没有收拢，这本身就是一种宝贵的开放状态。",
+    directions: ["先从最感兴趣的一件事开始", "允许自己多尝试、慢慢聚焦", "找到同路人一起探索"],
+    step: "写下三件让你感到好奇或有点兴奋的事，从中选一件，给自己两周时间去了解它。"
+  }
+};
+
+let answers = [];
+let cur = 0;
+
+function startQuiz() {
+  document.getElementById('page-landing').classList.remove('active');
+  document.getElementById('page-quiz').classList.add('active');
+  showQuestion(0);
+}
+
+function showQuestion(i) {
+  cur = i;
+  const q = questions[i];
+  const keys = ['A', 'B', 'C', 'D', 'E'];
+  document.getElementById('progress-label').textContent = `第 ${i + 1} 题 / 共 10 题`;
+  document.getElementById('progress-fill').style.width = `${(i + 1) / 10 * 100}%`;
+
+  let html = `<p class="q-num">第 ${i + 1} 题</p><p class="q-text">${q.q}</p><div class="options">`;
+  q.opts.forEach((o, j) => {
+    html += `<button class="opt" onclick="choose(${j})" id="opt-${j}">
+      <span class="opt-key">${keys[j]}</span>
+      <span class="opt-text">${o}</span>
+    </button>`;
+  });
+  html += '</div>';
+  document.getElementById('question-area').innerHTML = html;
+}
+
+function choose(idx) {
+  document.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('opt-' + idx).classList.add('selected');
+  answers[cur] = idx;
+  setTimeout(() => {
+    if (cur < 9) { showQuestion(cur + 1); }
+    else { showResult(); }
+  }, 350);
+}
+
+function calcType() {
+  const a4 = answers[3]; // 别人找你帮什么忙
+  const a5 = answers[4]; // 忘了时间做什么
+  const a7 = answers[6]; // 最擅长
+  const a8 = answers[7]; // 想尝试的方向
+
+  let express = 0, plan = 0, learn = 0, connect = 0;
+
+  // 第4题
+  if (a4 === 0) { express++; connect++; }      // 倾听和安慰
+  else if (a4 === 1) { plan++; }               // 出主意、做规划
+  else if (a4 === 2) { learn++; }              // 动手做具体的事
+
+  // 第5题
+  if (a5 === 0) express++;                     // 写东西、表达
+  else if (a5 === 1) plan++;                   // 整理、规划
+  else if (a5 === 2) learn++;                  // 学习新技能
+  else if (a5 === 3) connect++;               // 和人交流
+
+  // 第7题
+  if (a7 === 0) connect++;                     // 和人打交道
+  else if (a7 === 1) express++;               // 写作或表达
+  else if (a7 === 2) plan++;                  // 组织和管理
+  else if (a7 === 3) learn++;                 // 学习和研究
+
+  // 第8题
+  if (a8 === 0) express++;                     // 内容创作
+  else if (a8 === 1) { plan++; learn++; }     // 教育培训
+  else if (a8 === 2) connect++;               // 服务类
+  else if (a8 === 3) learn++;                 // 技能变现
+
+  const scores = { express, plan, learn, connect };
+  const max = Math.max(express, plan, learn, connect);
+  if (max === 0) return 'explore';
+  const winners = Object.keys(scores).filter(k => scores[k] === max);
+  if (winners.length > 1) return 'explore';
+  return winners[0];
+}
+
+function showResult() {
+  const type = calcType();
+  const r = results[type];
+  document.getElementById('page-quiz').classList.remove('active');
+  document.getElementById('page-result').classList.add('active');
+
+  const tagsHtml = r.directions.map(d => `<span class="tag">${d}</span>`).join('');
+
+  document.getElementById('result-area').innerHTML = `
+    <div style="padding-top: 1rem; padding-bottom: 2rem;">
+      <span class="result-badge">${r.badge}</span>
+      <h2 class="result-title">${r.title}</h2>
+
+      <div class="result-card">
+        <div class="section-label">✦ 你的核心优势</div>
+        <p class="result-body">${r.strength}</p>
+      </div>
+
+      <div class="result-card">
+        <div class="section-label">✦ 适合你探索的方向</div>
+        <div class="tag-wrap">${tagsHtml}</div>
+      </div>
+
+      <div class="first-step-card">
+        <div class="first-step-label">▶ 建议你的第一步</div>
+        <p class="first-step-body">${r.step}</p>
+      </div>
+
+      <div class="cta-card">
+        <p class="cta-text"></p>
+      </div>
+
+      <button class="retry-btn" onclick="restart()">↩ 重新测一次</button>
+    </div>`;
+}
+
+function restart() {
+  answers = [];
+  cur = 0;
+  document.getElementById('page-result').classList.remove('active');
+  document.getElementById('page-landing').classList.add('active');
+}
+</script>
+
+</body>
+</html>
